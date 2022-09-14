@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 
+import 'controller/theme_controller.dart';
 import 'routes/routes.dart';
-import 'utils/custom_color.dart';
+import 'theme/themes.dart';
 import 'utils/strings.dart';
 
 void main() async {
   await GetStorage.init();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+  final ThemeController _themeController = Get.put(ThemeController());
 
   // This widget is the root of your application.
   @override
@@ -29,10 +30,9 @@ class MyApp extends StatelessWidget {
             child: widget!,
           );
         },
-        theme: ThemeData(
-          primaryColor: CustomColor.primaryColor,
-          fontFamily: GoogleFonts.josefinSans().fontFamily,
-        ),
+        theme: Themes.lightTheme,
+        darkTheme: Themes.darkTheme,
+        themeMode: _themeController.theme,
         title: Strings.appName,
         debugShowCheckedModeBanner: false,
         navigatorKey: Get.key,

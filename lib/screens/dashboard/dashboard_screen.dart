@@ -20,7 +20,7 @@ class DashboardScreen extends StatelessWidget {
       body: Obx(
         () => IndexedStack(
           index: dashboardController.tabIndex.value,
-          children:  [
+          children:  const [
            // HomeScreen(),
             // CategoriesScreen(),
             // PurchasedScreen(),

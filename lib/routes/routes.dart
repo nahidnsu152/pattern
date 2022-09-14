@@ -2,9 +2,9 @@ import 'package:get/get.dart';
 
 import '../binding/dashboard_binding.dart';
 import '../binding/splash_binding.dart';
-import '../views/dashboard/dashboard_screen.dart';
-import '../views/onboard/onboard.dart';
-import '../views/splash/splash_screen.dart';
+import '../screens/dashboard/dashboard_screen.dart';
+import '../screens/onboard/onboard_screen.dart';
+import '../screens/splash/splash_screen.dart';
 
 class Routes {
   static const String splashScreen = '/splashScreen';

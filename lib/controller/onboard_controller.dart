@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../helper/pref_helper.dart';
-import '../models/onboard_model.dart';
-import '../routes/routes.dart';
-import '../utils/custom_color.dart';
-import '../utils/dimensions.dart';
-import '../utils/strings.dart';
-import '../widgets/buttons/default_button.dart';
+import 'package:get/get.dart';
+import 'package:pattern/models/onboard_model.dart';
+import 'package:pattern/routes/routes.dart';
+import 'package:pattern/utils/custom_color.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class OnboardController extends GetxController {
   var selectedIndex = 0.obs;
@@ -17,13 +13,13 @@ class OnboardController extends GetxController {
   bool get isLastPage => selectedIndex.value == onboardData.length - 1;
   bool get isFirstPage => selectedIndex.value == 0;
   bool get isSecondPage => selectedIndex.value == 1;
-  bool get isThirdPage => selectedIndex.value == 2;
+  bool get isThirdPage => selectedIndex.value == 3;
 
   void nextPage() {
     if (isLastPage) {
-      PrefHelper.saveIntroStatus(
-        isCompleted: true,
-      );
+      // Get.toNamed(
+      //   Routes.homeScreen,
+      // );
     } else {
       pageController.nextPage(
         duration: 300.milliseconds,
@@ -32,29 +28,96 @@ class OnboardController extends GetxController {
     }
   }
 
-  pageNavigate() {
-    PrefHelper.saveIntroStatus(
-      isCompleted: true,
-    );
-    Get.toNamed(
-      Routes.welcomeScreen,
+  void backPage() {
+    pageController.previousPage(
+      duration: 300.milliseconds,
+      curve: Curves.ease,
     );
   }
 
   AnimatedContainer buildDot({int? index}) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      margin: EdgeInsets.only(right: 30.w),
+      margin: EdgeInsets.only(right: 5.w),
       height: 16.h,
       width: 16.w,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: index! <= selectedIndex.value
-            ? CustomColor.secondaryColor
-            : Colors.black.withOpacity(0.5),
+            ? CustomColor.primaryColor
+            : Colors.white,
         border: Border.all(
-          color: Colors.transparent,
+          color: index <= selectedIndex.value
+              ? CustomColor.primaryColor
+              : CustomColor.secondaryColor,
           width: 1.w,
+        ),
+      ),
+    );
+  }
+
+  AnimatedContainer buildDot1({int? index}) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      margin: EdgeInsets.only(right: 5.w),
+      height: 16.h,
+      width: 16.w,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: index == selectedIndex.value
+            ? CustomColor.primaryColor
+            : Colors.white,
+        border: Border.all(
+          color: index == selectedIndex.value
+              ? CustomColor.primaryColor
+              : CustomColor.secondaryColor,
+          width: 1.w,
+        ),
+      ),
+    );
+  }
+
+  // buildDot2({required int index}) {
+  //   return AnimatedContainer(
+  //     duration: const Duration(milliseconds: 200),
+  //     margin: EdgeInsets.only(right: 10.w),
+  //     height: 10.h,
+  //     width: 10.w,
+  //     child: Container(
+  //       decoration: BoxDecoration(
+  //         color: index == selectedIndex.value
+  //             ? CustomColor.primaryColor
+  //             : Colors.white,
+  //         borderRadius: BorderRadius.circular(30.r),
+  //         border: Border.all(
+  //           color: index == selectedIndex.value
+  //               ? CustomColor.primaryColor
+  //               : CustomColor.secondaryColor,
+  //           width: 1.w,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  AnimatedContainer buildDot2({int? index}) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height: 10,
+      width: selectedIndex.value == index ? 25 : 10,
+      margin: const EdgeInsets.only(right: 5),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: index == selectedIndex.value
+              ? CustomColor.primaryColor
+              : Colors.white,
+          border: Border.all(
+            color: index == selectedIndex.value
+                ? CustomColor.primaryColor
+                : CustomColor.secondaryColor,
+            width: 1.w,
+          ),
         ),
       ),
     );
@@ -65,34 +128,49 @@ class OnboardController extends GetxController {
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
         onboardData.length,
-        (index) => buildDot(index: index),
+        (index) => buildDot(
+          index: index,
+        ),
       ),
     );
   }
 
-  buttonWidget() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: 36.w,
-      ),
-      child: SizedBox(
-        width: 294.78.w,
-        height: 47.3.h,
-        child: DefaultButton(
-          title: isLastPage ? Strings.getStarted.tr : Strings.next.tr,
-          onPresssed: () {
-            isLastPage ? pageNavigate() : nextPage();
-
-            if (isLastPage) {
-              PrefHelper.saveIntroStatus(
-                isCompleted: true,
-              );
-              pageNavigate();
-            } else {
-              nextPage();
-            }
-          },
+  dotWidget1() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        onboardData.length,
+        (index) => buildDot1(
+          index: index,
         ),
+      ),
+    );
+  }
+
+  dotWidget2() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        onboardData.length,
+        (index) => buildDot2(
+          index: index,
+        ),
+      ),
+    );
+  }
+
+  linearPercentWidget() {
+    return SizedBox(
+      height: 50.h,
+      child: LinearPercentIndicator(
+        backgroundColor: Colors.grey,
+        lineHeight: 5,
+        progressColor: Colors.red,
+        percent: isFirstPage
+            ? 0.33
+            : isSecondPage
+                ? 0.66
+                : 1,
       ),
     );
   }

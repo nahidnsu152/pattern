@@ -12,10 +12,11 @@ class SplashController extends GetxController {
   }
 
   Future<void> navigate() async {
-    Timer(const Duration(seconds: 1), () {
-      PrefHelper.isCompleted()
-          ? Get.offAllNamed(Routes.welcomeScreen)
-          : Get.offAndToNamed(Routes.onboardScreen);
-    });
+    // Timer(const Duration(seconds: 1), () {
+    //   PrefHelper.isCompleted()
+    //       ? Get.offAllNamed(Routes.welcomeScreen)
+    //       : Get.offAndToNamed(Routes.onboardScreen);
+    // });
+    Get.offAllNamed(Routes.onboardScreen);
   }
 }
