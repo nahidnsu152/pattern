@@ -1,6 +1,5 @@
 # pattern
-
-A new Flutter project.
+Flutter Getx app template with MVC pattern. 
 
 ## Getting Started
 
