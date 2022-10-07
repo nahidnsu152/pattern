@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'controller/theme_controller.dart';
+import 'helper/keyboard.dart';
 import 'routes/routes.dart';
 import 'theme/themes.dart';
 import 'utils/strings.dart';
@@ -20,24 +21,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(414, 896),
-      builder: (context, widget) => GetMaterialApp(
-        builder: (context, widget) {
-          ScreenUtil.init(context);
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-            child: widget!,
-          );
-        },
-        theme: Themes.lightTheme,
-        darkTheme: Themes.darkTheme,
-        themeMode: _themeController.theme,
-        title: Strings.appName,
-        debugShowCheckedModeBanner: false,
-        navigatorKey: Get.key,
-        initialRoute: Routes.splashScreen,
-        getPages: Routes.list,
+    return DismissKeyboard(
+      child: ScreenUtilInit(
+        designSize: const Size(414, 896),
+        builder: (context, widget) => GetMaterialApp(
+          builder: (context, widget) {
+            ScreenUtil.init(context);
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: widget!,
+            );
+          },
+          theme: Themes.lightTheme,
+          darkTheme: Themes.darkTheme,
+          themeMode: _themeController.theme,
+          title: Strings.appName,
+          debugShowCheckedModeBanner: false,
+          navigatorKey: Get.key,
+          initialRoute: Routes.splashScreen,
+          getPages: Routes.list,
+        ),
       ),
     );
   }
